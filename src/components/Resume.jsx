@@ -1,9 +1,16 @@
 import { FaDownload, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaBriefcase, FaGraduationCap, FaProjectDiagram, FaAward, FaTrophy, FaMedal, FaCertificate, FaMicrosoft } from 'react-icons/fa';
 import './Resume.css';
+import { useEffect, useState } from "react";
 
 const Resume = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const handleDownload = () => {
-    window.print();
+    if (isClient) window.print();
   };
 
   return (
