@@ -47,7 +47,7 @@ const Resume = () => {
               </div>
               <div className="contact-item">
                 <FaMapMarkerAlt />
-                <span>Indore, M.P. 452012</span>
+                <span>Indore, Madhya Pradesh</span>
               </div>
               <div className="contact-item">
                 <FaGithub />
@@ -63,26 +63,29 @@ const Resume = () => {
           {/* Skills */}
           <div className="sidebar-section">
             <h3 className="sidebar-title">Technical Skills</h3>
-            <div className="skills-list">
-              <div className="skill-group">
-                <h4 className="skill-group-title">Languages & Frameworks</h4>
-                <div className="skill-tags">
-                  <span className="skill-tag">Ruby</span>
-                  <span className="skill-tag">Rails</span>
-                  <span className="skill-tag">HTML5</span>
-                  <span className="skill-tag">CSS3</span>
-                </div>
+
+            <div className="skill-group">
+              <h4 className="skill-group-title">Backend</h4>
+              <div className="skill-tags">
+                <span className="skill-tag">Ruby</span>
+                <span className="skill-tag">Ruby on Rails</span>
+                <span className="skill-tag">MVC Architecture</span>
+                <span className="skill-tag">REST APIs</span>
+                <span className="skill-tag">Devise Authentication</span>
+                <span className="skill-tag">ActiveRecord</span>
               </div>
-              <div className="skill-group">
-                <h4 className="skill-group-title">Databases</h4>
-                <div className="skill-tags">
-                  <span className="skill-tag">PostgreSQL</span>
-                  <span className="skill-tag">Redis</span>
-                  <span className="skill-tag">ElasticSearch</span>
-                  <span className="skill-tag">SQLite</span>
-                </div>
+            </div>
+
+            <div className="skill-group">
+              <h4 className="skill-group-title">Frontend</h4>
+              <div className="skill-tags">
+                <span className="skill-tag">React.js (Basics)</span>
+                <span className="skill-tag">HTML5</span>
+                <span className="skill-tag">CSS3</span>
               </div>
-              <div className="skill-group">
+            </div>
+
+            <div className="skill-group">
                 <h4 className="skill-group-title">DevOps</h4>
                 <div className="skill-tags">
                   <span className="skill-tag">Docker</span>
@@ -91,15 +94,23 @@ const Resume = () => {
                   <span className="skill-tag">Vercel</span>
                 </div>
               </div>
-              <div className="skill-group">
-                <h4 className="skill-group-title">Tools & Methods</h4>
-                <div className="skill-tags">
-                  <span className="skill-tag">Sidekiq</span>
-                  <span className="skill-tag">RESTful APIs</span>
-                  <span className="skill-tag">TDD/BDD</span>
-                  <span className="skill-tag">Agile</span>
-                </div>
+
+            <div className="skill-group">
+              <h4 className="skill-group-title">Database</h4>
+              <div className="skill-tags">
+                <span className="skill-tag">PostgreSQL</span>
+                <span className="skill-tag">SQLite</span>
               </div>
+            </div>
+
+            <div className="skill-group">
+              <h4 className="skill-group-title">Tools</h4>
+              <div className="skill-tags">
+                <span className="skill-tag">Git</span>
+                <span className="skill-tag">GitHub</span>
+                <span className="skill-tag">Jira</span>
+                <span className="skill-tag">Trello</span>
+             </div>
             </div>
           </div>
 
@@ -136,12 +147,14 @@ const Resume = () => {
               <h3 className="section-title">Professional Summary</h3>
             </div>
             <p className="section-content">
-              Passionate Backend and DevOps Developer with expertise in Ruby on Rails, building scalable 
-              applications, and managing infrastructure. Experienced in developing robust backend systems, 
-              implementing CI/CD pipelines, and optimizing application performance. Skilled in implementing 
-              efficient database solutions, containerization with Docker, and following best practices 
-              like TDD, BDD, and Agile methodologies.
-            </p>
+              Ruby on Rails Developer with 1+ year of hands-on experience building
+              backend-driven web applications using MVC architecture and RESTful
+              APIs. Experienced in developing CRUD modules, implementing user
+              authentication using Devise, and working with PostgreSQL databases.
+              Also familiar with React.js for building basic component-based user
+              interfaces. Actively seeking a remote, product-focused role with
+              growth opportunities.
+           </p>
           </section>
 
           {/* Experience */}
@@ -225,6 +238,14 @@ const Resume = () => {
                 <p className="project-tech">Ruby on Rails • PostgreSQL • ActiveRecord</p>
                 <p className="project-desc">Learning Management System with course management</p>
                 <a href="https://github.com/rudra1819/lms-final" target="_blank" rel="noopener noreferrer" className="project-link">
+                  <FaGithub /> View on GitHub
+                </a>
+              </div>
+              <div className="project-card">
+                <h4 className="project-name">Krishna Technology Website</h4>
+                <p className="project-tech">React.js • Vite • HTML • CSS</p>
+                <p className="project-desc">Company portfolio website built using React and deployed online.</p>
+                <a href="https://github.com/rudra1819/The-Krishna-s" target="_blank" rel="noopener noreferrer" className="project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
