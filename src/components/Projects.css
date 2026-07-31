@@ -1,8 +1,7 @@
 .projects {
   padding: 100px 2rem;
-  background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
   min-height: 100vh;
-  margin-left: 300px;
   position: relative;
 }
 
@@ -13,7 +12,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -26,12 +25,21 @@
   z-index: 1;
 }
 
+/* Cards are wrapped in Tilt3D, so the grid item is .tilt3d and the styled
+   surface is its child. */
+.projects-grid > .tilt3d {
+  height: 100%;
+}
+
+/* NOTE: this class lands on the same element as .tilt3d-surface, which owns
+   `transform` and `transition`. Declaring either here would fight the tilt, so
+   this rule sticks to paint properties only. */
 .project-card {
-  background: rgba(15, 15, 15, 0.9);
+  background: linear-gradient(165deg, rgba(41, 29, 26, 0.9), rgba(19, 15, 14, 0.95));
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(0, 212, 255, 0.15);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+  box-shadow: var(--depth-md);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -45,19 +53,17 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #00d4ff, #8a2be2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.project-card:hover::before {
-  opacity: 1;
+  z-index: 5;
+  background: var(--gradient-warm);
+  /* Driven by the tilt's hover flag rather than :hover, so it fades in step with
+     the card lifting. */
+  opacity: var(--tilt-active, 0);
+  transition: opacity 0.35s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-12px) scale(1.02);
-  border-color: rgba(0, 212, 255, 0.4);
-  box-shadow: 0 20px 60px rgba(0, 212, 255, 0.25), 0 0 40px rgba(138, 43, 226, 0.15);
+  border-color: rgba(var(--primary-rgb), 0.45);
+  box-shadow: var(--depth-glow);
 }
 
 .project-icon-wrapper {
@@ -71,13 +77,12 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
-
-.project-card:hover .project-icon-wrapper {
-  transform: rotate(5deg) scale(1.1);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--depth-md);
+  /* .depth-3 supplies the translateZ; keep it and add the rotation on hover so
+     the badge lifts out of the card rather than replacing its depth. */
+  transform: translateZ(60px) rotate(calc(6deg * var(--tilt-active, 0)))
+    scale(calc(1 + 0.08 * var(--tilt-active, 0)));
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
 }
 
 .project-icon {
@@ -86,25 +91,60 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.project-image {
+/* Replaces the old screenshot slot. GitHub returns no image for a repo, and the
+   previous placeholder-image host is no longer reachable, so the card leads
+   with its own gradient plus the detected language. */
+.project-banner {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 160px;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a1a2e, #0f0f0f);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
 }
 
-.project-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  filter: brightness(0.8);
+.project-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(var(--bg-primary-rgb), 0.1) 0%, rgba(var(--bg-primary-rgb), 0.55) 100%);
+  transition: opacity 0.4s ease;
 }
 
-.project-card:hover .project-image img {
-  transform: scale(1.15);
-  filter: brightness(1);
+.project-card:hover .project-banner::after {
+  opacity: 0.4;
+}
+
+.project-banner-language {
+  position: relative;
+  z-index: 2;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  background: rgba(var(--bg-primary-rgb), 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.project-badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 11;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg-primary);
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
 
 .project-overlay {
@@ -113,7 +153,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.85), rgba(138, 43, 226, 0.85));
+  /* Above .tilt3d-glare (z-index 4), so the specular highlight does not wash out
+     the action icons. */
+  z-index: 6;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.88), rgba(var(--secondary-rgb), 0.82));
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -124,6 +167,11 @@
 }
 
 .project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+/* Keep the action icons reachable by keyboard, not just by hover. */
+.project-overlay:focus-within {
   opacity: 1;
 }
 
@@ -155,7 +203,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: rgba(15, 15, 15, 0.5);
+  background: rgba(var(--bg-primary-rgb), 0.5);
 }
 
 .project-title {
@@ -163,7 +211,7 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #ffffff, #00d4ff);
+  background: linear-gradient(135deg, #ffffff, var(--primary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -171,18 +219,44 @@
 }
 
 .project-card:hover .project-title {
-  background: linear-gradient(135deg, #00d4ff, #8a2be2);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .project-description {
-  color: #b0b0b0;
+  color: var(--text-secondary);
   line-height: 1.7;
   margin-bottom: 1rem;
   flex: 1;
   font-size: 0.95rem;
+}
+
+/* Live GitHub figures: stars, forks and how recently the repo was pushed. */
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.project-meta:empty {
+  display: none;
+}
+
+.project-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.project-meta-item svg {
+  color: rgba(var(--primary-rgb), 0.7);
+  font-size: 0.85rem;
 }
 
 .project-technologies {
@@ -193,26 +267,57 @@
 
 .tech-tag {
   padding: 0.35rem 0.85rem;
-  background: rgba(0, 212, 255, 0.1);
-  color: #00d4ff;
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary-color);
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
 
 .tech-tag:hover {
-  background: rgba(0, 212, 255, 0.2);
-  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(var(--primary-rgb), 0.2);
+  border-color: rgba(var(--primary-rgb), 0.4);
   transform: translateY(-2px);
 }
 
+.section-subtitle {
+  position: relative;
+  z-index: 1;
+  margin-top: -1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.projects-empty {
+  position: relative;
+  z-index: 1;
+  margin-top: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Skeletons hold the grid's shape while the API responds, so the page below
+   does not jump once the real cards arrive. */
+.project-card--skeleton {
+  pointer-events: none;
+}
+
+.project-card--skeleton .project-banner {
+  height: 160px;
+  border-radius: 0;
+}
+
+.project-card--skeleton:hover {
+  transform: none;
+  border-color: var(--border-color);
+  box-shadow: none;
+}
+
 @media screen and (max-width: 968px) {
-  .projects {
-    margin-left: 0;
-  }
 
   .projects-grid {
     grid-template-columns: 1fr;

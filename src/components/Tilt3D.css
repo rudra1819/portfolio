@@ -1,0 +1,79 @@
+/* 3D tilt surface. The --tilt-* and --glare-* values are written by useTilt on
+   pointer move; the defaults here mean the card renders flat and correct before
+   any pointer has touched it, and on devices that never will. */
+
+.tilt3d {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glare-x: 50%;
+  --glare-y: 50%;
+  --tilt-active: 0;
+
+  perspective: var(--perspective);
+  /* Without this the browser flattens nested translateZ children into the
+     parent's plane and the depth disappears. */
+  transform-style: preserve-3d;
+}
+
+.tilt3d-surface {
+  position: relative;
+  height: 100%;
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+    scale(calc(1 + 0.02 * var(--tilt-active)));
+  transform-style: preserve-3d;
+  /* Snappy while tracking the pointer, slower on the way back to flat. The
+     easing lives here rather than in JS so it eases the release too. */
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease, border-color 0.35s ease;
+  will-change: transform;
+}
+
+/* Moving specular highlight. Follows the pointer, fades in with --tilt-active,
+   and is masked to the card by the parent's overflow/border-radius. */
+.tilt3d-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: calc(0.55 * var(--tilt-active));
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    circle at var(--glare-x) var(--glare-y),
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(var(--secondary-rgb), 0.08) 28%,
+    transparent 62%
+  );
+  /* Sits above the card's content but below anything that needs clicking; the
+     interactive overlays in project cards use a higher z-index. */
+  z-index: 4;
+}
+
+/* Children opt into depth with these, so cards do not each reinvent the offsets. */
+.depth-1 {
+  transform: translateZ(18px);
+}
+
+.depth-2 {
+  transform: translateZ(38px);
+}
+
+.depth-3 {
+  transform: translateZ(60px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt3d-surface {
+    transform: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .tilt3d-glare {
+    display: none;
+  }
+
+  .depth-1,
+  .depth-2,
+  .depth-3 {
+    transform: none;
+  }
+}

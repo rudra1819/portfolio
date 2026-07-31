@@ -1,10 +1,9 @@
 .about {
   padding: 100px 2rem;
-  background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
-  margin-left: 300px;
   position: relative;
 }
 
@@ -15,7 +14,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -34,7 +33,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
-  background: linear-gradient(135deg, #ffffff, #00d4ff);
+  background: linear-gradient(135deg, #ffffff, var(--primary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -47,9 +46,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120%;
+  /* Height can overspill freely, but width must stay at 100%: this glow sits in a
+     1200px container, and at 120% it pushed ~150px of phantom horizontal overflow
+     onto every section that uses .section-title. The gradient already fades out
+     at 70%, so the clamp is not visible. */
+  width: 100%;
   height: 120%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
   z-index: -1;
   animation: pulse 3s ease-in-out infinite;
 }
@@ -62,9 +65,9 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(135deg, #00d4ff, #8a2be2);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
 }
 
 @keyframes titleGlow {
@@ -76,14 +79,17 @@
   }
 }
 
+/* Pulses opacity only. Scaling this glow past 1 widened it beyond its 100%
+   container and put a few tens of pixels of horizontal overflow on every section;
+   for a soft radial gradient the brightness change reads the same anyway. */
 @keyframes pulse {
   0%, 100% {
-    opacity: 0.5;
+    opacity: 0.45;
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -95,27 +101,27 @@
 .about-text p {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   text-align: left;
 }
 
 .about-intro {
   font-size: 1.15rem !important;
-  color: #d0d0d0 !important;
+  color: var(--text-secondary) !important;
 }
 
 .about-intro strong,
 .about-text strong {
-  color: #00d4ff;
+  color: var(--primary-color);
   font-weight: 600;
 }
 
 .about-highlights {
   margin: 2rem 0;
   padding: 2rem;
-  background: rgba(0, 212, 255, 0.05);
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  background: rgba(var(--primary-rgb), 0.05);
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
   border-radius: 16px;
 }
 
@@ -137,12 +143,12 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
 .highlight-icon {
-  color: #00d4ff;
+  color: var(--primary-color);
   font-size: 1.1rem;
   flex-shrink: 0;
 }
@@ -152,9 +158,6 @@
 }
 
 @media screen and (max-width: 968px) {
-  .about {
-    margin-left: 0;
-  }
 
   .section-title {
     font-size: 2rem;

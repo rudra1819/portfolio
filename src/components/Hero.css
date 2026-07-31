@@ -4,10 +4,9 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
   position: relative;
   overflow: hidden;
-  margin-left: 300px;
 }
 
 .hero::before {
@@ -18,9 +17,9 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 50% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(var(--secondary-rgb), 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 20%, rgba(var(--accent-plum-rgb), 0.1) 0%, transparent 50%);
   pointer-events: none;
   animation: gradientShift 15s ease infinite;
 }
@@ -32,7 +31,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.03) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--primary-rgb), 0.03) 0%, transparent 70%);
   animation: rotate 20s linear infinite;
   pointer-events: none;
 }
@@ -55,14 +54,173 @@
   }
 }
 
+/* Perspective floor grid. Purely a depth cue - it gives the floating chips a
+   ground plane to read against, which is what stops them looking like flat
+   badges scattered on the background. */
+.hero-floor {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(var(--primary-rgb), 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--primary-rgb), 0.5) 1px, transparent 1px);
+  background-size: 46px 46px;
+  transform: perspective(300px) rotateX(60deg);
+  transform-origin: bottom center;
+  /* Fades out toward the horizon so the grid does not end in a hard line. */
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 6%, transparent 72%);
+}
+
 .hero-content {
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 3rem;
+  align-items: center;
 }
 
 .hero-text {
   animation: fadeInUp 1s ease;
+}
+
+/* ---- 3D stack scene -------------------------------------------------------
+   The scene owns the perspective; children position themselves in it with
+   translateZ. --px / --py are written by usePointerParallax on the .hero
+   element and inherit down to here. */
+
+.hero-scene {
+  position: relative;
+  aspect-ratio: 1;
+  min-height: 380px;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  animation: fadeInUp 1.2s ease 0.15s backwards;
+}
+
+.hero-scene-glow {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--primary-rgb), 0.32) 0%,
+    rgba(var(--secondary-rgb), 0.14) 45%,
+    transparent 72%
+  );
+  filter: blur(28px);
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -14px), -60px);
+}
+
+.hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--gradient-deep);
+  box-shadow: var(--depth-glow), inset 0 -10px 24px rgba(10, 5, 4, 0.45),
+    inset 0 10px 20px rgba(255, 255, 255, 0.14);
+  transform: translate3d(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px), 45px);
+  transform-style: preserve-3d;
+}
+
+.hero-orb-initials {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(10, 5, 4, 0.5);
+}
+
+/* Two rings orbiting at different radii and speeds, tilted out of the picture
+   plane so they read as orbits rather than concentric circles. */
+.hero-orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  pointer-events: none;
+}
+
+.hero-orb-ring--1 {
+  inset: -34px;
+  transform: rotateX(74deg);
+  animation: orbitSpin 14s linear infinite;
+}
+
+.hero-orb-ring--2 {
+  inset: -58px;
+  border-color: rgba(var(--secondary-rgb), 0.28);
+  transform: rotateX(74deg) rotateY(28deg);
+  animation: orbitSpin 22s linear infinite reverse;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotateX(74deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(74deg) rotateZ(360deg);
+  }
+}
+
+/* Outer element handles parallax; the inner one handles the float. Splitting
+   them avoids the CSS animation overwriting the parallax transform. */
+.hero-chip {
+  position: absolute;
+  top: var(--chip-y);
+  left: var(--chip-x);
+  transform: translate3d(
+    calc(var(--px, 0) * var(--chip-shift)),
+    calc(var(--py, 0) * var(--chip-shift)),
+    var(--chip-z)
+  );
+  transform-style: preserve-3d;
+}
+
+.hero-chip-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 14px;
+  white-space: nowrap;
+  background: linear-gradient(145deg, rgba(41, 29, 26, 0.96), rgba(19, 15, 14, 0.9));
+  border: 1px solid rgba(var(--primary-rgb), 0.28);
+  box-shadow: var(--depth-md);
+  backdrop-filter: blur(8px);
+  animation: chipFloat 7s ease-in-out infinite;
+}
+
+.hero-chip-icon {
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  color: var(--secondary-color);
+}
+
+.hero-chip-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+@keyframes chipFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-13px);
+  }
 }
 
 .hero-title {
@@ -74,8 +232,8 @@
 }
 
 .highlight {
-  color: #00d4ff;
-  background: linear-gradient(135deg, #00d4ff, #8a2be2);
+  color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -84,18 +242,18 @@
 .hero-subtitle {
   font-size: 2rem;
   font-weight: 400;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
 }
 
 .hero-badge {
   display: inline-block;
   padding: 0.5rem 1.25rem;
-  background: rgba(0, 212, 255, 0.1);
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
   border-radius: 50px;
   font-size: 0.9rem;
-  color: #00d4ff;
+  color: var(--primary-color);
   margin-bottom: 1.5rem;
   font-weight: 500;
   animation: pulseBadge 2s ease-in-out infinite;
@@ -103,16 +261,16 @@
 
 @keyframes pulseBadge {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(0, 212, 255, 0);
+    box-shadow: 0 0 0 8px rgba(var(--primary-rgb), 0);
   }
 }
 
 .hero-description {
   font-size: 1.1rem;
-  color: #888;
+  color: var(--text-muted);
   line-height: 1.8;
   margin-bottom: 2rem;
   max-width: 600px;
@@ -140,24 +298,24 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #00d4ff, #00a8cc);
+  background: linear-gradient(135deg, var(--primary-color), var(--ruby-deep));
   color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #00d4ff;
-  border: 2px solid #00d4ff;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .btn-secondary:hover {
-  background: rgba(0, 212, 255, 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
   transform: translateY(-2px);
 }
 
@@ -172,16 +330,16 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
 .feature-dot {
   width: 8px;
   height: 8px;
-  background: linear-gradient(135deg, #00d4ff, #8a2be2);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
   animation: pulseDot 2s ease-in-out infinite;
 }
 
@@ -207,10 +365,19 @@
   }
 }
 
-@media screen and (max-width: 968px) {
-  .hero {
-    margin-left: 0;
+@media screen and (max-width: 1180px) {
+  /* The scene needs real room to read as depth. Below this it competes with the
+     copy for width, so it drops out entirely rather than being squeezed. */
+  .hero-content {
+    grid-template-columns: minmax(0, 1fr);
   }
+
+  .hero-scene {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 968px) {
 
   .hero-title {
     font-size: 2.5rem;
@@ -228,6 +395,31 @@
 
   .hero-subtitle {
     font-size: 1.25rem;
+  }
+
+  .hero-floor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after,
+  .hero-text,
+  .hero-scene,
+  .hero-badge,
+  .feature-dot,
+  .hero-chip-inner,
+  .hero-orb-ring {
+    animation: none;
+  }
+
+  .hero-orb-ring--1 {
+    transform: rotateX(74deg);
+  }
+
+  .hero-orb-ring--2 {
+    transform: rotateX(74deg) rotateY(28deg);
   }
 }
 

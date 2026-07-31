@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Contact.css';
 
 const Contact = () => {
+  const [revealRef, isRevealed] = useScrollReveal();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,7 +83,10 @@ const Contact = () => {
     <section id="contact" className="contact">
       <div className="container">
         <h2 className="section-title">Get In Touch</h2>
-        <div className="contact-content">
+        <div
+          ref={revealRef}
+          className={`contact-content reveal-stagger ${isRevealed ? 'is-revealed' : ''}`}
+        >
           <div className="contact-info">
             <h3>Let's Connect</h3>
             <p>

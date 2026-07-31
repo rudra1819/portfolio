@@ -1,8 +1,7 @@
 .experience {
   padding: 100px 2rem;
-  background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
   min-height: 100vh;
-  margin-left: 300px;
   position: relative;
 }
 
@@ -13,7 +12,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -24,8 +23,8 @@
 }
 
 .experience-item {
-  background: rgba(15, 15, 15, 0.9);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  background: rgba(var(--bg-primary-rgb), 0.9);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -41,7 +40,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #00d4ff, #8a2be2);
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
   opacity: 0;
   transition: opacity 0.3s ease;
   border-radius: 20px 20px 0 0;
@@ -52,9 +51,9 @@
 }
 
 .experience-item:hover {
-  border-color: rgba(0, 212, 255, 0.4);
+  border-color: rgba(var(--primary-rgb), 0.4);
   transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2), 0 0 30px rgba(138, 43, 226, 0.1);
+  box-shadow: 0 15px 40px rgba(var(--primary-rgb), 0.2), 0 0 30px rgba(var(--secondary-rgb), 0.1);
 }
 
 .experience-header {
@@ -64,7 +63,7 @@
 .experience-role {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
@@ -85,12 +84,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #b0b0b0;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
 .meta-icon {
-  color: #00d4ff;
+  color: var(--primary-color);
   font-size: 1rem;
 }
 
@@ -101,7 +100,7 @@
 }
 
 .experience-description li {
-  color: #b0b0b0;
+  color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: 0.75rem;
   padding-left: 1.5rem;
@@ -112,13 +111,8 @@
   content: '▸';
   position: absolute;
   left: 0;
-  color: #00d4ff;
+  color: var(--primary-color);
   font-weight: bold;
 }
 
-@media screen and (max-width: 968px) {
-  .experience {
-    margin-left: 0;
-  }
-}
 

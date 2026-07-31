@@ -1,8 +1,7 @@
 .certifications {
   padding: 100px 2rem;
-  background: #0f0f0f;
+  background: var(--bg-primary);
   min-height: 100vh;
-  margin-left: 300px;
 }
 
 .certifications-grid {
@@ -12,21 +11,30 @@
   margin-top: 3rem;
 }
 
+/* Wrapped in Tilt3D: this class lands on .tilt3d-surface, which owns `transform`
+   and `transition`, so this rule stays on paint properties only. */
 .certification-card {
-  background: rgba(15, 15, 15, 0.8);
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  background: linear-gradient(165deg, rgba(41, 29, 26, 0.88), rgba(19, 15, 14, 0.94));
+  border: 1px solid rgba(var(--primary-rgb), 0.12);
   border-radius: 16px;
   padding: 2rem;
   text-align: center;
-  transition: all 0.3s ease;
+  box-shadow: var(--depth-sm);
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 }
 
 .certification-card:hover {
-  border-color: rgba(0, 212, 255, 0.3);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+  border-color: rgba(var(--primary-rgb), 0.4);
+  box-shadow: var(--depth-lg);
+}
+
+/* The tilt wrapper is the focusable element, so the ring belongs on it. */
+.tilt3d:focus-visible {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 4px;
+  border-radius: 18px;
 }
 
 .cert-view-link {
@@ -35,14 +43,15 @@
   justify-content: center;
   gap: 0.5rem;
   margin-top: 1rem;
-  color: #00d4ff;
+  color: var(--primary-color);
   font-size: 0.9rem;
   font-weight: 500;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.certification-card:hover .cert-view-link {
+.certification-card:hover .cert-view-link,
+.tilt3d:focus-visible .cert-view-link {
   opacity: 1;
 }
 
@@ -57,10 +66,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 212, 255, 0.1);
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.24), rgba(var(--secondary-rgb), 0.2));
+  border: 1px solid rgba(var(--primary-rgb), 0.32);
   border-radius: 50%;
-  color: #00d4ff;
+  color: var(--secondary-color);
   font-size: 1.5rem;
+  box-shadow: var(--depth-sm);
 }
 
 .cert-name {
@@ -71,15 +82,12 @@
 }
 
 .cert-issuer {
-  color: #b0b0b0;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   margin: 0;
 }
 
 @media screen and (max-width: 968px) {
-  .certifications {
-    margin-left: 0;
-  }
 
   .certifications-grid {
     grid-template-columns: 1fr;

@@ -1,7 +1,11 @@
 import { FaGraduationCap, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { useScrollReveal } from '../hooks/useScrollReveal';
+import Tilt3D from './Tilt3D';
 import './Education.css';
 
 const Education = () => {
+  const [gridRef, gridRevealed] = useScrollReveal();
+
   const education = [
     {
       id: 1,
@@ -33,15 +37,18 @@ const Education = () => {
     <section id="education" className="education">
       <div className="container">
         <h2 className="section-title">Education</h2>
-        <div className="education-grid">
+        <div
+          ref={gridRef}
+          className={`education-grid reveal-stagger ${gridRevealed ? 'is-revealed' : ''}`}
+        >
           {education.map((edu) => (
-            <div key={edu.id} className="education-card">
-              <div className="education-icon">
+            <Tilt3D key={edu.id} className="education-card" max={8}>
+              <div className="education-icon depth-2">
                 <FaGraduationCap />
               </div>
-              <h3 className="education-degree">{edu.degree}</h3>
-              <h4 className="education-institution">{edu.institution}</h4>
-              <div className="education-meta">
+              <h3 className="education-degree depth-1">{edu.degree}</h3>
+              <h4 className="education-institution depth-1">{edu.institution}</h4>
+              <div className="education-meta depth-1">
                 <div className="meta-item">
                   <FaCalendarAlt className="meta-icon" />
                   <span>{edu.period}</span>
@@ -51,8 +58,8 @@ const Education = () => {
                   <span>{edu.location}</span>
                 </div>
               </div>
-              <p className="education-cgpa">{edu.cgpa}</p>
-            </div>
+              <p className="education-cgpa depth-1">{edu.cgpa}</p>
+            </Tilt3D>
           ))}
         </div>
       </div>
