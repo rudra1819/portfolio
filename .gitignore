@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment files - VITE_API_URL is public, but never commit an API token.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

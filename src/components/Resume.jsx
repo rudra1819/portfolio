@@ -37,23 +37,23 @@ const Resume = () => {
           <div className="sidebar-section">
             <h3 className="sidebar-title">Contact</h3>
             <div className="contact-list">
-              <div className="contact-item">
+              <div className="resume-contact-item">
                 <FaEnvelope />
                 <span>Goswamirudra825@gmail.com</span>
               </div>
-              <div className="contact-item">
+              <div className="resume-contact-item">
                 <FaPhone />
                 <span>+91 7880243673</span>
               </div>
-              <div className="contact-item">
+              <div className="resume-contact-item">
                 <FaMapMarkerAlt />
                 <span>Indore, Madhya Pradesh</span>
               </div>
-              <div className="contact-item">
+              <div className="resume-contact-item">
                 <FaGithub />
                 <a href="https://github.com/rudra1819" target="_blank" rel="noopener noreferrer">github.com/rudra1819</a>
               </div>
-              <div className="contact-item">
+              <div className="resume-contact-item">
                 <FaLinkedin />
                 <a href="https://linkedin.com/in/bharat-goswami-a1544a242" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
               </div>
@@ -119,19 +119,19 @@ const Resume = () => {
             <h3 className="sidebar-title">Certifications</h3>
             <ul className="certifications-list-sidebar">
               <li>
-                <FaMicrosoft className="cert-icon cert-icon-microsoft" />
+                <FaMicrosoft className="resume-cert-icon cert-icon-microsoft" />
                 <span>Career Essentials in Generative AI - Microsoft & LinkedIn</span>
               </li>
               <li>
-                <FaGraduationCap className="cert-icon cert-icon-education" />
+                <FaGraduationCap className="resume-cert-icon cert-icon-education" />
                 <span>Discrete Mathematics - RGPV</span>
               </li>
               <li>
-                <FaAward className="cert-icon cert-icon-award" />
+                <FaAward className="resume-cert-icon cert-icon-award" />
                 <span>Mathematics 2 & 3 - RGPV</span>
               </li>
               <li>
-                <FaTrophy className="cert-icon cert-icon-trophy" />
+                <FaTrophy className="resume-cert-icon cert-icon-trophy" />
                 <span>Internship Certificate - ZenQua</span>
               </li>
             </ul>
@@ -144,7 +144,7 @@ const Resume = () => {
           <section className="resume-section">
             <div className="section-header">
               <FaBriefcase className="section-icon" />
-              <h3 className="section-title">Professional Summary</h3>
+              <h3 className="resume-section-title">Professional Summary</h3>
             </div>
             <p className="section-content">
               Ruby on Rails Developer with 1+ year of hands-on experience building
@@ -161,43 +161,48 @@ const Resume = () => {
           <section className="resume-section">
             <div className="section-header">
               <FaBriefcase className="section-icon" />
-              <h3 className="section-title">Professional Experience</h3>
+              <h3 className="resume-section-title">Professional Experience</h3>
             </div>
             
-            <div className="experience-item">
-              <div className="experience-header">
+            <div className="resume-experience-item">
+              <div className="resume-experience-header">
                 <div>
                   <h4 className="job-title">Associate Software Engineer</h4>
                   <p className="company-name">ZenQua Technologies Pvt. Ltd.</p>
                 </div>
                 <div className="experience-date">
                   <span className="date-badge">July 2025 – Present</span>
-                  <span className="location">Indore, M.P.</span>
+                  <span className="location">Indore, Madhya Pradesh, India</span>
                 </div>
               </div>
               <ul className="job-responsibilities">
-                <li>Developing backend systems using Ruby on Rails and PostgreSQL</li>
-                <li>Delivering features for authentication, CRUD operations and custom business logic</li>
-                <li>Collaborating in a team using GitHub for version control and Jira for task management</li>
-                <li>Implementing CI/CD pipelines and optimizing application performance</li>
+                <li>Developed and maintained production-grade backend applications using Ruby on Rails, PostgreSQL, and MySQL.</li>
+                <li>Designed, built, and maintained RESTful APIs, authentication modules, CRUD operations, and custom business workflows.</li>
+                <li>Optimized ActiveRecord queries and database performance to improve application efficiency and scalability.</li>
+                <li>Worked with Redis and Sidekiq for background job processing and asynchronous task execution.</li>
+                <li>Diagnosed and resolved production issues, performed bug fixes, and contributed to application stability and reliability.</li>
+                <li>Collaborated with cross-functional teams using GitHub, Jira, and Agile development practices.</li>
+                <li>Participated in code reviews, feature development, and backend architecture improvements.</li>
+                <li>Worked with Docker, Kubernetes (GKE), and CI/CD pipelines to support deployments and production environments.</li>
+                <li>Gained exposure to PHP while supporting backend modules alongside Ruby on Rails projects.</li>
               </ul>
             </div>
 
-            <div className="experience-item">
-              <div className="experience-header">
+            <div className="resume-experience-item">
+              <div className="resume-experience-header">
                 <div>
                   <h4 className="job-title">Trainee Software Engineer</h4>
                   <p className="company-name">ZenQua Technologies Pvt. Ltd.</p>
                 </div>
                 <div className="experience-date">
                   <span className="date-badge">Dec 2024 – Apr 2025</span>
-                  <span className="location">Indore, M.P.</span>
+                  <span className="location">Indore, Madhya Pradesh, India</span>
                 </div>
               </div>
               <ul className="job-responsibilities">
-                <li>Developed backend systems using Ruby on Rails and PostgreSQL</li>
-                <li>Delivered features for authentication, CRUD operations and custom business logic</li>
-                <li>Collaborated in a team using GitHub for version control and Jira for task management</li>
+                <li>Developed backend systems using Ruby on Rails and PostgreSQL.</li>
+                <li>Delivered features for authentication, CRUD operations, and custom business logic.</li>
+                <li>Collaborated in a team using GitHub for version control and Jira for task management.</li>
               </ul>
             </div>
           </section>
@@ -206,46 +211,46 @@ const Resume = () => {
           <section className="resume-section">
             <div className="section-header">
               <FaProjectDiagram className="section-icon" />
-              <h3 className="section-title">Key Projects</h3>
+              <h3 className="resume-section-title">Key Projects</h3>
             </div>
-            <div className="projects-grid">
-              <div className="project-card">
+            <div className="resume-projects-grid">
+              <div className="resume-project-card">
                 <h4 className="project-name">StudentMart</h4>
                 <p className="project-tech">Ruby on Rails • PostgreSQL • HTML5 • CSS3</p>
                 <p className="project-desc">Comprehensive student management platform</p>
-                <a href="https://github.com/rudra1819/studentmart" target="_blank" rel="noopener noreferrer" className="project-link">
+                <a href="https://github.com/rudra1819/studentmart" target="_blank" rel="noopener noreferrer" className="resume-project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
-              <div className="project-card">
+              <div className="resume-project-card">
                 <h4 className="project-name">HR Mitra</h4>
                 <p className="project-tech">Ruby on Rails • PostgreSQL • Sidekiq</p>
                 <p className="project-desc">Human Resources management system for efficient HR operations</p>
-                <a href="https://github.com/rudra1819/HR-mitra" target="_blank" rel="noopener noreferrer" className="project-link">
+                <a href="https://github.com/rudra1819/HR-mitra" target="_blank" rel="noopener noreferrer" className="resume-project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
-              <div className="project-card">
+              <div className="resume-project-card">
                 <h4 className="project-name">Trading Dashboard</h4>
                 <p className="project-tech">Ruby on Rails • Redis • ActionCable</p>
                 <p className="project-desc">Real-time trading dashboard with analytics and monitoring</p>
-                <a href="https://github.com/rudra1819/trading-dashboard" target="_blank" rel="noopener noreferrer" className="project-link">
+                <a href="https://github.com/rudra1819/trading-dashboard" target="_blank" rel="noopener noreferrer" className="resume-project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
-              <div className="project-card">
+              <div className="resume-project-card">
                 <h4 className="project-name">LMS Final</h4>
                 <p className="project-tech">Ruby on Rails • PostgreSQL • ActiveRecord</p>
                 <p className="project-desc">Learning Management System with course management</p>
-                <a href="https://github.com/rudra1819/lms-final" target="_blank" rel="noopener noreferrer" className="project-link">
+                <a href="https://github.com/rudra1819/lms-final" target="_blank" rel="noopener noreferrer" className="resume-project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
-              <div className="project-card">
+              <div className="resume-project-card">
                 <h4 className="project-name">Krishna Technology Website</h4>
                 <p className="project-tech">React.js • Vite • HTML • CSS</p>
                 <p className="project-desc">Company portfolio website built using React and deployed online.</p>
-                <a href="https://github.com/rudra1819/The-Krishna-s" target="_blank" rel="noopener noreferrer" className="project-link">
+                <a href="https://github.com/rudra1819/The-Krishna-s" target="_blank" rel="noopener noreferrer" className="resume-project-link">
                   <FaGithub /> View on GitHub
                 </a>
               </div>
@@ -256,7 +261,7 @@ const Resume = () => {
           <section className="resume-section">
             <div className="section-header">
               <FaGraduationCap className="section-icon" />
-              <h3 className="section-title">Education</h3>
+              <h3 className="resume-section-title">Education</h3>
             </div>
             <div className="education-timeline">
               <div className="education-item">

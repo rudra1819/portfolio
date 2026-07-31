@@ -1,0 +1,21 @@
+# PostgreSQL configuration for the portfolio API.
+#
+# Local development uses peer/socket auth as the current OS user, so no
+# username or password is needed. Production reads DATABASE_URL, which is what
+# Render / Fly.io / Railway inject automatically for a managed Postgres.
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: portfolio_api_development
+
+test:
+  <<: *default
+  database: portfolio_api_test
+
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>

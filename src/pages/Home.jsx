@@ -1,5 +1,4 @@
 import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
 import Hero from '../components/Hero';
 import Stats from '../components/Stats';
 import About from '../components/About';
@@ -14,7 +13,6 @@ import Footer from '../components/Footer';
 const Home = () => {
   return (
     <>
-      <Sidebar />
       <Navbar />
       <Hero />
       <Stats />

@@ -1,7 +1,9 @@
 import { FaCheckCircle } from 'react-icons/fa';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import './About.css';
 
 const About = () => {
+  const [revealRef, isRevealed] = useScrollReveal();
   const highlights = [
     'Scalable Backend Systems Development',
     'CI/CD Pipeline Implementation',
@@ -31,7 +33,10 @@ const About = () => {
             </p>
             <div className="about-highlights">
               <h3 className="highlights-title">Core Expertise</h3>
-              <div className="highlights-grid">
+              <div
+          ref={revealRef}
+          className={`highlights-grid reveal-stagger ${isRevealed ? 'is-revealed' : ''}`}
+        >
                 {highlights.map((highlight, index) => (
                   <div key={index} className="highlight-item">
                     <FaCheckCircle className="highlight-icon" />

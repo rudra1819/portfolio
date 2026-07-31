@@ -1,10 +1,9 @@
 .contact {
   padding: 100px 2rem;
-  background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
-  margin-left: 300px;
 }
 
 .contact-content {
@@ -21,7 +20,7 @@
 }
 
 .contact-info p {
-  color: #b0b0b0;
+  color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: 2rem;
 }
@@ -37,9 +36,9 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(0, 212, 255, 0.05);
+  background: rgba(var(--primary-rgb), 0.05);
   border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
   transition: all 0.3s ease;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -47,14 +46,14 @@
 }
 
 .contact-item:hover {
-  background: rgba(0, 212, 255, 0.1);
-  border-color: rgba(0, 212, 255, 0.3);
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: rgba(var(--primary-rgb), 0.3);
   transform: translateX(5px);
 }
 
 .contact-icon {
   font-size: 1.5rem;
-  color: #00d4ff;
+  color: var(--primary-color);
   margin-top: 0.25rem;
   flex-shrink: 0;
 }
@@ -75,7 +74,7 @@
 
 .contact-item p,
 .contact-item a {
-  color: #888;
+  color: var(--text-muted);
   margin: 0;
   font-size: 0.9rem;
   text-decoration: none;
@@ -88,7 +87,7 @@
 }
 
 .contact-item a:hover {
-  color: #00d4ff;
+  color: var(--primary-color);
 }
 
 .contact-form {
@@ -105,8 +104,8 @@
 .form-group textarea {
   width: 100%;
   padding: 1rem;
-  background: rgba(15, 15, 15, 0.8);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: rgba(var(--bg-primary-rgb), 0.8);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
   border-radius: 8px;
   color: #ffffff;
   font-size: 1rem;
@@ -117,8 +116,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #00d4ff;
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
 }
 
 .form-group textarea {
@@ -151,9 +150,9 @@
 }
 
 .form-message.success {
-  background: rgba(0, 212, 255, 0.1);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  color: #00d4ff;
+  background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  color: var(--primary-color);
 }
 
 .form-message.error {
@@ -174,9 +173,6 @@
 }
 
 @media screen and (max-width: 968px) {
-  .contact {
-    margin-left: 0;
-  }
 
   .contact-content {
     grid-template-columns: 1fr;

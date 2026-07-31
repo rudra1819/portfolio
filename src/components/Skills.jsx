@@ -1,6 +1,36 @@
 import { FaDocker, FaGitAlt } from 'react-icons/fa';
 import { SiRubyonrails, SiPostgresql, SiRedis, SiKubernetes, SiVercel } from 'react-icons/si';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Skills.css';
+
+const SkillCategory = ({ category }) => {
+  const [ref, isRevealed] = useScrollReveal();
+
+  return (
+    <div ref={ref} className={`skill-category reveal ${isRevealed ? 'is-revealed' : ''}`}>
+      <h3 className="category-title">{category.title}</h3>
+      <div className="skills-grid">
+        {category.skills.map((skill, index) => (
+          <div key={skill.name} className="skill-item">
+            <div className="skill-header">
+              {skill.icon && <div className="skill-icon">{skill.icon}</div>}
+              <span className="skill-name">{skill.name}</span>
+              <span className="skill-percentage">{skill.level}%</span>
+            </div>
+            <div className={`skill-bar ${isRevealed ? 'is-filled' : ''}`}>
+              {/* The level is a CSS variable rather than an inline width so the
+                  bar can animate from zero when the category scrolls into view. */}
+              <div
+                className="skill-progress"
+                style={{ '--skill-level': `${skill.level}%`, '--skill-delay': `${index * 60}ms` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Skills = () => {
   const skillCategories = [
@@ -67,28 +97,11 @@ const Skills = () => {
     <section id="skills" className="skills">
       <div className="container">
         <h2 className="section-title">Skills</h2>
+        {/* Each category reveals and fills its bars on its own, so scrolling
+            through the section stays paced instead of firing everything at once. */}
         <div className="skills-content">
-          {skillCategories.map((category, index) => (
-            <div key={index} className="skill-category">
-              <h3 className="category-title">{category.title}</h3>
-              <div className="skills-grid">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex} className="skill-item">
-                    <div className="skill-header">
-                      {skill.icon && <div className="skill-icon">{skill.icon}</div>}
-                      <span className="skill-name">{skill.name}</span>
-                      <span className="skill-percentage">{skill.level}%</span>
-                    </div>
-                    <div className="skill-bar">
-                      <div 
-                        className="skill-progress" 
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {skillCategories.map((category) => (
+            <SkillCategory key={category.title} category={category} />
           ))}
         </div>
       </div>

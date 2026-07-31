@@ -1,8 +1,7 @@
 .footer {
   padding: 2rem;
-  background: #0a0a0a;
-  border-top: 1px solid rgba(0, 212, 255, 0.1);
-  margin-left: 300px;
+  background: #0e0b0a;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
 }
 
 .footer-content {
@@ -14,7 +13,7 @@
 }
 
 .footer-text p {
-  color: #888;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -24,20 +23,17 @@
 }
 
 .footer-social a {
-  color: #888;
+  color: var(--text-muted);
   font-size: 1.5rem;
   transition: all 0.3s ease;
 }
 
 .footer-social a:hover {
-  color: #00d4ff;
+  color: var(--primary-color);
   transform: translateY(-3px);
 }
 
 @media screen and (max-width: 968px) {
-  .footer {
-    margin-left: 0;
-  }
 
   .footer-content {
     flex-direction: column;

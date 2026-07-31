@@ -19,17 +19,55 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  /* Business Color Palette */
-  --primary-color: #00d4ff;
-  --secondary-color: #8a2be2;
-  --accent-color: #00a8cc;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --text-muted: #888;
-  --bg-primary: #0f0f0f;
-  --bg-secondary: #1a1a2e;
-  --border-color: rgba(0, 212, 255, 0.15);
+
+  /* ---- Palette: ruby on warm dark ---------------------------------------
+     Ruby is the lead accent (a nod to the Rails stack), warmed with amber and
+     gold so gradients have somewhere to travel instead of flattening out.
+     The *-rgb tokens exist so translucent layers can be written as
+     rgba(var(--primary-rgb), 0.15) rather than hardcoding channels again. */
+
+  --primary-color: #e01e41;
+  --primary-rgb: 224, 30, 65;
+  --ruby-bright: #ff2e55;
+  --ruby-bright-rgb: 255, 46, 85;
+  --ruby-deep: #8f1128;
+
+  --secondary-color: #ff8a3d;
+  --secondary-rgb: 255, 138, 61;
+
+  --accent-color: #ffc357;
+  --accent-rgb: 255, 195, 87;
+
+  /* Cool counterweight. Used sparingly, only inside gradients, to keep the
+     warm palette from reading as monochrome. */
+  --accent-plum: #a01a5c;
+  --accent-plum-rgb: 160, 26, 92;
+
+  --text-primary: #fbf1ef;
+  --text-secondary: #c4aca7;
+  --text-muted: #9c8580;
+
+  --bg-primary: #130f0e;
+  --bg-primary-rgb: 19, 15, 14;
+  --bg-secondary: #1e1614;
+  --bg-elevated: #291d1a;
+
+  --border-color: rgba(224, 30, 65, 0.18);
+
+  /* ---- Gradient combinations ------------------------------------------- */
+  --gradient-primary: linear-gradient(135deg, #e01e41, #ff8a3d);
+  --gradient-warm: linear-gradient(135deg, #ff2e55, #ff8a3d 55%, #ffc357);
+  --gradient-deep: linear-gradient(135deg, #a01a5c, #e01e41 60%, #ff8a3d);
+  --gradient-text: linear-gradient(135deg, #fbf1ef, #ff8a3d);
+
+  /* ---- 3D / depth -------------------------------------------------------
+     Shadows are warm-tinted rather than neutral black, so raised surfaces sit
+     in the same light as the palette instead of looking grey. */
+  --perspective: 1100px;
+  --depth-sm: 0 4px 12px rgba(10, 5, 4, 0.5);
+  --depth-md: 0 14px 34px rgba(10, 5, 4, 0.55), 0 0 0 1px rgba(224, 30, 65, 0.08);
+  --depth-lg: 0 28px 64px rgba(10, 5, 4, 0.65), 0 8px 24px rgba(224, 30, 65, 0.18);
+  --depth-glow: 0 24px 60px rgba(224, 30, 65, 0.28), 0 0 44px rgba(255, 138, 61, 0.14);
 }
 
 body {
@@ -62,4 +100,118 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 212, 255, 0.5);
+}
+
+/* ---- Scroll reveal --------------------------------------------------------
+   Paired with useScrollReveal. The rotateX is what makes a section feel like it
+   is settling into place in 3D rather than just fading. */
+
+.reveal {
+  opacity: 0;
+  transform: perspective(var(--perspective)) translateY(38px) rotateX(-6deg);
+  transform-origin: center top;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: perspective(var(--perspective)) translateY(0) rotateX(0);
+}
+
+/* Staggers children of a revealed container. Capped at 6 steps so a long grid
+   does not leave the last card waiting a noticeable beat. */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-stagger.is-revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.is-revealed > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.is-revealed > *:nth-child(2) { transition-delay: 0.12s; }
+.reveal-stagger.is-revealed > *:nth-child(3) { transition-delay: 0.19s; }
+.reveal-stagger.is-revealed > *:nth-child(4) { transition-delay: 0.26s; }
+.reveal-stagger.is-revealed > *:nth-child(5) { transition-delay: 0.33s; }
+.reveal-stagger.is-revealed > *:nth-child(n + 6) { transition-delay: 0.4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-revealed,
+  .reveal-stagger > *,
+  .reveal-stagger.is-revealed > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---- Loading placeholders -------------------------------------------------
+   Shared by any section that waits on the portfolio API, so a slow response
+   shows the shape of the content instead of collapsing the layout. */
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-block,
+.skeleton-line,
+.skeleton-pill {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(0, 212, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton-line {
+  display: block;
+  height: 0.85rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-line--title {
+  height: 1.4rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-line--short {
+  width: 70%;
+}
+
+.skeleton-line--number {
+  height: 2.2rem;
+  width: 4.5rem;
+  margin: 0 auto;
+}
+
+.skeleton-pill {
+  display: inline-block;
+  width: 4.5rem;
+  height: 1.6rem;
+  border-radius: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block,
+  .skeleton-line,
+  .skeleton-pill {
+    animation: none;
+  }
 }
