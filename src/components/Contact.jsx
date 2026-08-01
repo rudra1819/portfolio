@@ -4,6 +4,28 @@ import emailjs from '@emailjs/browser';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Contact.css';
 
+const CONTACT_EMAIL = 'Goswamirudra825@gmail.com';
+
+// Set these in .env to send through EmailJS (see EMAILJS_SETUP.md).
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+// All three are required. Previously these fell back to 'YOUR_SERVICE_ID'
+// placeholders, which meant an unconfigured form still fired a request that could
+// only ever fail - so every visitor got an error and their message was lost.
+const isEmailJsConfigured = Boolean(SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY);
+
+// Fallback path: hand the message to the visitor's own mail client with
+// everything pre-filled, so it still reaches the inbox when EmailJS is not set up
+// or is failing.
+const buildMailtoUrl = ({ name, email, message }) => {
+  const subject = `Portfolio enquiry from ${name || 'a visitor'}`;
+  const body = `${message}\n\n---\nFrom: ${name} <${email}>`;
+
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
 const Contact = () => {
   const [revealRef, isRevealed] = useScrollReveal();
   const [formData, setFormData] = useState({
@@ -14,21 +36,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // EmailJS Configuration - Yeh values aapko EmailJS dashboard se milengi
-  // Option 1: Environment variables use karo (recommended)
-  // .env file mein yeh add karo:
-  // VITE_EMAILJS_SERVICE_ID=your_service_id
-  // VITE_EMAILJS_TEMPLATE_ID=your_template_id
-  // VITE_EMAILJS_PUBLIC_KEY=your_public_key
-  
-  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
-  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
-  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
-  
-  // Option 2: Direct values yahan add kar sakte ho (agar .env use nahi karna)
-  // const SERVICE_ID = 'service_xxxxxxxxx';
-  // const TEMPLATE_ID = 'template_xxxxxxxxx';
-  // const PUBLIC_KEY = 'xxxxxxxxxxxxxxxxxxxx';
+  const [mailtoUrl, setMailtoUrl] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -39,41 +47,62 @@ const Contact = () => {
     if (submitStatus) setSubmitStatus(null);
   };
 
+  // Opens the visitor's mail client with the message pre-filled, and keeps the URL
+  // so the UI can show a link too - the automatic open is sometimes blocked, and a
+  // silently dropped message would be the worst outcome here.
+  const fallBackToMailClient = () => {
+    const url = buildMailtoUrl(formData);
+    setMailtoUrl(url);
+    setSubmitStatus('fallback');
+    window.location.href = url;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setMailtoUrl(null);
+
+    // Nothing to send through, so go straight to the mail client rather than
+    // firing a request that cannot succeed.
+    if (!isEmailJsConfigured) {
+      const missing = [
+        !SERVICE_ID && 'VITE_EMAILJS_SERVICE_ID',
+        !TEMPLATE_ID && 'VITE_EMAILJS_TEMPLATE_ID',
+        !PUBLIC_KEY && 'VITE_EMAILJS_PUBLIC_KEY',
+      ].filter(Boolean);
+
+      console.warn(
+        `[contact] Not sending through EmailJS - missing ${missing.join(', ')}. ` +
+          'Opening the mail client instead. See EMAILJS_SETUP.md; remember these are ' +
+          'read at build time, so set them in Vercel and redeploy.'
+      );
+
+      fallBackToMailClient();
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
-      // EmailJS se email send karo
-      const result = await emailjs.send(
+      await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
         {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
-          to_email: 'Goswamirudra825@gmail.com', // Aapka email jahan message aana chahiye
+          to_email: CONTACT_EMAIL,
         },
         PUBLIC_KEY
       );
 
-      console.log('Email sent successfully!', result);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
-      
-      // Success message 5 seconds baad hide ho jayega
-      setTimeout(() => {
-        setSubmitStatus(null);
-      }, 5000);
+      setTimeout(() => setSubmitStatus(null), 6000);
     } catch (error) {
-      console.error('Error sending email:', error);
-      setSubmitStatus('error');
-      
-      // Error message 5 seconds baad hide ho jayega
-      setTimeout(() => {
-        setSubmitStatus(null);
-      }, 5000);
+      // A rejected send should not lose the message either.
+      console.error('[contact] EmailJS send failed, falling back to mail client:', error);
+      fallBackToMailClient();
     } finally {
       setIsSubmitting(false);
     }
@@ -157,14 +186,17 @@ const Contact = () => {
             </button>
             
             {submitStatus === 'success' && (
-              <div className="form-message success">
-                ✅ Thank you! Your message has been sent successfully. I'll get back to you soon.
+              <div className="form-message success" role="status">
+                ✅ Thank you! Your message has been sent successfully. I&apos;ll get back to you soon.
               </div>
             )}
-            
-            {submitStatus === 'error' && (
-              <div className="form-message error">
-                ❌ Sorry, there was an error sending your message. Please try again or contact me directly at Goswamirudra825@gmail.com
+
+            {submitStatus === 'fallback' && (
+              <div className="form-message info" role="status">
+                📨 Opening your email app with the message ready to send. If nothing
+                opened,{' '}
+                <a href={mailtoUrl}>click here</a> or email me directly at{' '}
+                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
               </div>
             )}
           </form>
