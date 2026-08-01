@@ -30,6 +30,7 @@ const Navbar = () => {
         </div>
         <ul className={`nav-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>Home</a></li>
+          <li><a href="#live" onClick={(e) => { e.preventDefault(); scrollToSection('live'); }}>Live</a></li>
           <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>About</a></li>
           <li><a href="#skills" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>Skills</a></li>
           <li><a href="#experience" onClick={(e) => { e.preventDefault(); scrollToSection('experience'); }}>Experience</a></li>

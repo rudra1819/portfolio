@@ -1,0 +1,236 @@
+/* Shipped products, deliberately styled richer than the GitHub project cards:
+   wider, gold-leaning accent, and a live indicator. The visual separation is the
+   point - a launched product should not read as one repo among several. */
+
+.live-projects {
+  padding: 100px 2rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  position: relative;
+}
+
+.live-projects::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 55%),
+    radial-gradient(circle at 85% 80%, rgba(var(--accent-rgb), 0.07) 0%, transparent 55%);
+}
+
+.live-grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Paint properties only: .tilt3d-surface owns transform and transition. */
+.live-card {
+  display: grid;
+  grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+  gap: 2.25rem;
+  align-items: start;
+  padding: 2.5rem;
+  border-radius: 24px;
+  background: linear-gradient(150deg, rgba(41, 29, 26, 0.94), rgba(19, 15, 14, 0.96));
+  border: 1px solid rgba(var(--secondary-rgb), 0.22);
+  box-shadow: var(--depth-lg);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.live-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  z-index: 5;
+  background: var(--gradient-warm);
+}
+
+.live-card:hover {
+  border-color: rgba(var(--secondary-rgb), 0.5);
+  box-shadow: var(--depth-glow);
+}
+
+.live-card-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.live-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(10, 5, 4, 0.45);
+  box-shadow: var(--depth-md), inset 0 -6px 16px rgba(10, 5, 4, 0.3),
+    inset 0 6px 14px rgba(255, 255, 255, 0.18);
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7ee08a;
+  background: rgba(126, 224, 138, 0.1);
+  border: 1px solid rgba(126, 224, 138, 0.3);
+}
+
+/* Green reads as "up" almost universally, so this one indicator sits outside the
+   warm palette on purpose. */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7ee08a;
+  box-shadow: 0 0 8px #7ee08a;
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.live-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.live-role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg-primary);
+  padding: 0.28rem 0.7rem;
+  border-radius: 20px;
+  background: var(--gradient-warm);
+}
+
+.live-since {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.live-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.live-tagline {
+  font-size: 1.05rem;
+  color: var(--secondary-color);
+  margin: 0 0 0.9rem;
+  line-height: 1.5;
+}
+
+.live-description {
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin: 0 0 1.25rem;
+  max-width: 62ch;
+}
+
+.live-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.live-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--gradient-warm);
+  box-shadow: 0 8px 22px rgba(var(--secondary-rgb), 0.28);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.live-visit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(var(--secondary-rgb), 0.4);
+}
+
+.live-visit-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.live-visit:hover .live-visit-arrow {
+  transform: translateX(4px);
+}
+
+@media screen and (max-width: 768px) {
+  .live-projects {
+    padding: 70px 1.25rem;
+  }
+
+  /* Stack, and centre the logo/badge above the copy. */
+  .live-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .live-card-aside {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .live-name {
+    font-size: 1.6rem;
+  }
+
+  .live-tagline {
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+
+  .live-visit:hover,
+  .live-visit:hover .live-visit-arrow {
+    transform: none;
+  }
+}
