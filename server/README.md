@@ -40,7 +40,7 @@ from PostgreSQL - a request never blocks on GitHub.
 ## Local setup
 
 ```bash
-cd api
+cd server
 bundle install
 bin/rails db:create db:migrate db:seed   # db:seed loads the curation overrides
 bin/rails github:sync                    # first pull from GitHub

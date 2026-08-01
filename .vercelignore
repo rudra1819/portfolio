@@ -1,0 +1,12 @@
+# The Rails API in server/ is deployed separately (Render/Fly/Railway), never on
+# Vercel. Excluding it keeps the frontend deployment small and guarantees Vercel
+# never tries to interpret its Ruby files.
+#
+# This is belt-and-braces: the directory used to be called api/, which is a magic
+# path on Vercel - every file under a root-level api/ becomes a Serverless
+# Function, and with a Ruby runtime available all 34 .rb files were picked up,
+# blowing past the Hobby plan's 12-function limit and failing the build.
+server/
+
+# Local-only files that never belong in a deployment.
+*.log
