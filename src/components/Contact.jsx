@@ -66,6 +66,18 @@ const Contact = () => {
     // Nothing to send through, so go straight to the mail client rather than
     // firing a request that cannot succeed.
     if (!isEmailJsConfigured) {
+      const missing = [
+        !SERVICE_ID && 'VITE_EMAILJS_SERVICE_ID',
+        !TEMPLATE_ID && 'VITE_EMAILJS_TEMPLATE_ID',
+        !PUBLIC_KEY && 'VITE_EMAILJS_PUBLIC_KEY',
+      ].filter(Boolean);
+
+      console.warn(
+        `[contact] Not sending through EmailJS - missing ${missing.join(', ')}. ` +
+          'Opening the mail client instead. See EMAILJS_SETUP.md; remember these are ' +
+          'read at build time, so set them in Vercel and redeploy.'
+      );
+
       fallBackToMailClient();
       setIsSubmitting(false);
       return;
