@@ -1,6 +1,7 @@
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Stats from '../components/Stats';
+import LiveProjects from '../components/LiveProjects';
 import About from '../components/About';
 import Skills from '../components/Skills';
 import Experience from '../components/Experience';
@@ -16,6 +17,7 @@ const Home = () => {
       <Navbar />
       <Hero />
       <Stats />
+      <LiveProjects />
       <About />
       <Skills />
       <Experience />
