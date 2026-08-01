@@ -15,7 +15,7 @@ GitHub knows about.
 GitHub REST API
       |
       v
-api/  Rails 8 + PostgreSQL     <-- caches GitHub, applies your curation
+server/  Rails 8 + PostgreSQL     <-- caches GitHub, applies your curation
       |  GET /api/v1/projects
       |  GET /api/v1/stats
       v
@@ -30,7 +30,7 @@ Two properties worth knowing:
 - **GitHub data is curated, not raw.** Repo descriptions are thin and some repos
   should not be on a portfolio at all, so the API layers your own titles,
   descriptions, tags, ordering and hidden flags on top. See
-  [api/README.md](api/README.md#curating-what-appears).
+  [server/README.md](server/README.md#curating-what-appears).
 
 ## Features
 
@@ -79,10 +79,10 @@ Open `http://localhost:5173`. The Projects and Stats sections will show
 
 ### With live GitHub data
 
-Start the API (see [api/README.md](api/README.md) for the full setup):
+Start the API (see [server/README.md](server/README.md) for the full setup):
 
 ```bash
-cd api
+cd server
 bundle install
 bin/rails db:create db:migrate db:seed
 bin/rails github:sync
@@ -126,8 +126,8 @@ after changing it.
 
 4. **Projects Section** - no longer edited here. Projects come from the GitHub
    API; to change a title, description, tags, order, or to hide a repo, edit the
-   override in `api/db/seeds.rb` and run `bin/rails db:seed`. See
-   [api/README.md](api/README.md#curating-what-appears).
+   override in `server/db/seeds.rb` and run `bin/rails db:seed`. See
+   [server/README.md](server/README.md#curating-what-appears).
 
 5. **Contact Section** (`src/components/Contact.jsx`):
    - Update email, phone, and location
@@ -218,7 +218,7 @@ curl "$VITE_API_URL/api/v1/stats" | jq
 
 ```
 portfolio/
-├── api/                        Rails 8 API (see api/README.md)
+├── server/                     Rails 8 API (see server/README.md)
 │   ├── app/services/github/    GitHub client and sync services
 │   ├── app/models/             Project, ProjectOverride, ProfileSnapshot
 │   ├── app/serializers/        JSON shapes consumed by the frontend
