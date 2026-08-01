@@ -161,6 +161,20 @@
   color: #ff4d4d;
 }
 
+/* Handing off to the visitor's mail client is a normal outcome, not a failure, so
+   this reads as information in the warm accent rather than as a red error. */
+.form-message.info {
+  background: rgba(var(--secondary-rgb), 0.1);
+  border: 1px solid rgba(var(--secondary-rgb), 0.3);
+  color: var(--accent-color);
+}
+
+.form-message.info a {
+  color: var(--secondary-color);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

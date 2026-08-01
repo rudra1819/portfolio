@@ -131,7 +131,13 @@ after changing it.
 
 5. **Contact Section** (`src/components/Contact.jsx`):
    - Update email, phone, and location
-   - Connect the form to a backend service or email service
+   - The form sends through EmailJS when `VITE_EMAILJS_SERVICE_ID`,
+     `VITE_EMAILJS_TEMPLATE_ID` and `VITE_EMAILJS_PUBLIC_KEY` are all set (see
+     [EMAILJS_SETUP.md](EMAILJS_SETUP.md)). With any of them missing it falls back
+     to opening the visitor's own mail client with the name, email and message
+     pre-filled — so a message is never silently dropped either way.
+   - Remember to set the three variables in your Vercel environment too; they are
+     baked in at build time, so a redeploy is needed after changing them.
 
 6. **Footer** (`src/components/Footer.jsx`):
    - Update copyright name
